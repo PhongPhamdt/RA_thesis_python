@@ -13,7 +13,7 @@ pop.randomize(params=params)
 
 pop_init = Population().make_pop(params=params)
 best_allocate = NSGA().run(params=params, pop_init=pop_init)
-Common.printPop(best_allocate, params.tasks)
+Common.printPop(best_allocate, params.humans, params.machines)
 # func = Objectives()
 # print(func.f_cost(individual=pop, params=params))
 # print(1 << param.humans)

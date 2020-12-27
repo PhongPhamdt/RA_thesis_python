@@ -1,6 +1,7 @@
 from algorithm.individual import Individual
 from algorithm.objectives import Objectives
 from daos.parameter import Parameter
+from functools import cmp_to_key
 import numpy as np
 import random
 INFINITY = 10000
@@ -152,8 +153,9 @@ class NSGA:
                     return -1
                 return 0
             # init array 0,1,2,..,pop_size
+            cmp_items_py3 = cmp_to_key(cmp)
             sortedIndices = list(range(pop_size))
-            sortedIndices.sort(cmp)
+            sortedIndices.sort(key=cmp_items_py3)
             distance[sortedIndices[0]] += INFINITY
             distance[sortedIndices[pop_size-1]] += INFINITY
             for i in range(1, pop_size-1):
@@ -167,8 +169,9 @@ class NSGA:
             if diff > 0:
                 return -1
             return 0
+        cmp_items2_py3 = cmp_to_key(cmp_by_distance)
         sortedIndices = list(range(pop_size))
-        sortedIndices.sort(cmp_by_distance)
+        sortedIndices.sort(key=cmp_items2_py3)
         return sortedIndices
 
     def make_new_pop(self, population_info, Pc, Pm, params):

@@ -10,7 +10,7 @@ class Common:
             prev_tasks[item[1]].append(item[0])
         return prev_tasks
 
-    def printPop(populationInfo, numResource):
+    def printPop(populationInfo, numResourceHuman, numResourceMachine):
         x = len(populationInfo)
         print(populationInfo)
         print("\n Done \n Population include {} element ".format(x))
@@ -27,12 +27,14 @@ class Common:
                 print("\n solution {}. \n".format(ind))
                 for i in range(0, len(ele.t_human_assign)):
                     machine.append("({})".format("{0:b}".format(
-                        ele.t_machine_assign[i])).zfill(numResource))
+                        ele.t_machine_assign[i])).zfill(numResourceMachine))
                     human.append("({})".format("{0:b}".format(
-                        ele.t_human_assign[i])).zfill(numResource))
+                        ele.t_human_assign[i])).zfill(numResourceHuman))
 
                 print("t_m_assign  : {}".format(machine))
                 print("t_h_assign  : {}".format(human))
+                print("raw_m  :  {}".format(ele.t_machine_assign))
+                print("raw_h  :  {}".format(ele.t_human_assign))
 
             for i in range(0, numObj):
                 s[i] += ob_constr[0][i]
