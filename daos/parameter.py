@@ -12,6 +12,7 @@ class Parameter:
         self.t_duration = []
         self.max_t_duration = 0
         self.sizeD = 0
+        self.machines_type = 0
         self.D = []
         self.TREQ = []
         self.LEXP = []
@@ -35,6 +36,8 @@ class Parameter:
         self.m_prod = list(map(float, f.readline().split()))
         f.readline()
         self.skills = int(f.readline())
+        f.readline()
+        self.machines_type = int(f.readline())
         f.readline()
         self.t_duration = list(map(int, f.readline().split()))
         for t in self.t_duration:
