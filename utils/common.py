@@ -1,4 +1,5 @@
 from daos import Parameter
+import random
 
 
 class Common:
@@ -9,6 +10,18 @@ class Common:
         for item in params.D:
             prev_tasks[item[1]].append(item[0])
         return prev_tasks
+
+    def togger():
+        return str(random.randint(0, 1))
+
+    def rand_pos(string):
+        pos_flag = []
+        for i in range(0, len(string)):
+            if string[i] == 1:
+                pos_flag.append(i)
+        if len(pos_flag) > 0:
+            return random.choice(pos_flag)
+        return None
 
     def printPop(populationInfo, numResourceHuman, numResourceMachine):
         x = len(populationInfo)
@@ -26,10 +39,20 @@ class Common:
                 human = []
                 print("\n solution {}. \n".format(ind))
                 for i in range(0, len(ele.t_human_assign)):
-                    machine.append("({})".format("{0:b}".format(
-                        ele.t_machine_assign[i])).zfill(numResourceMachine))
-                    human.append("({})".format("{0:b}".format(
-                        ele.t_human_assign[i])).zfill(numResourceHuman))
+                    machine.append(
+                        "({})".format(
+                            "{0:b}".format(
+                                ele.t_machine_assign[i]
+                            ).zfill(numResourceMachine)
+                        )
+                    )
+                    human.append(
+                        "({})".format(
+                            "{0:b}".format(
+                                ele.t_human_assign[i]
+                            ).zfill(numResourceHuman)
+                        )
+                    )
 
                 print("t_m_assign  : {}".format(machine))
                 print("t_h_assign  : {}".format(human))
