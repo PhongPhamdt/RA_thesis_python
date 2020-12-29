@@ -2,6 +2,7 @@ from daos import Parameter
 from utils import Common
 import numpy as np
 import random
+from utils import Common
 
 
 class Individual:
@@ -23,36 +24,25 @@ class Individual:
         #     self.t_sched[j-1] = tj_sched + \
         #         random.randint(0, params.max_t_duration)
 
-        valid_human = np.zeros((params.tasks, params.humans), dtype=int)
-        valid_machine = np.zeros((params.tasks, params.machines), dtype=int)
-        for i in range(0, params.tasks):
-            for j in range(0, params.humans):
-                for k in range(0, params.skills):
-                    if params.TREQ[i][k] == 1 and params.LEXP[j][k] > 0:
-                        valid_human[i][j] = 1
-                        break
-                for l in range(0, params.machines):
-                    if params.MREQ[i][l] == 1 and params.MEXP[j][l] > 0:
-                        valid_machine[i][l] = 1
-                        break
-        print(valid_human)
-        print(valid_machine)
         for i in range(0, params.tasks):
             self.t_human_assign[i] = random.randint(
                 1, (1 << params.humans) - 1)
             self.t_machine_assign[i] = random.randint(
                 1, (1 << params.machines) - 1)
-
-            # for bit in range(0, params.humans):
-            #     if ((1 << bit & self.t_human_assign[i]) > 0) and (valid_human[i][bit]):
-            #         self.t_human_assign[i] -= 1 << bit
-
-            # for bit in range(0, params.machines):
-            #     if ((1 << bit & self.t_machine_assign[i]) > 0) and (valid_machine[i][bit]):
-            #         self.t_machine_assign[i] -= 1 << bit
-
-        print(list(map(np.binary_repr, self.t_human_assign)))
-        print(self.t_machine_assign)
+            t_h_bit_assign = params.valid_human[i]
+            t_h_bit_string = "0"*params.humans
+            t_m_bit_assign = params.valid_machine[i]
+            t_m_bit_string = "0"*params.machines
+            if Common.rand_pos(t_h_bit_assign) is not None:
+                t_h_bit_string_list = list(t_h_bit_string)
+                t_h_bit_string_list[Common.rand_pos(t_h_bit_assign)] = "1"
+                t_h_bit_string = "".join(t_h_bit_string_list)
+            if Common.rand_pos(t_m_bit_assign) is not None:
+                t_m_bit_string_list = list(t_m_bit_string)
+                t_m_bit_string_list[Common.rand_pos(t_m_bit_assign)] = "1"
+                t_m_bit_string = "".join(t_m_bit_string_list)
+            self.t_human_assign[i] = int(t_h_bit_string, 2)
+            self.t_machine_assign[i] = int(t_m_bit_string, 2)
 
     def set(self, t_h, t_m):
         self.t_human_assign = t_h

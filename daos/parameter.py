@@ -18,6 +18,8 @@ class Parameter:
         self.LEXP = []
         self.MREQ = []
         self.MEXP = []
+        self.valid_human = []
+        self.valid_machine = []
 
     def process(self, filename):
         f = open(filename, "r")
@@ -65,3 +67,15 @@ class Parameter:
         for _ in range(0, self.humans):
             line = f.readline()
             self.MEXP.append(list(map(float, line.split())))
+        self.valid_human = np.zeros((self.tasks, self.humans), dtype=int)
+        self.valid_machine = np.zeros((self.tasks, self.machines), dtype=int)
+        for i in range(0, self.tasks):
+            for j in range(0, self.humans):
+                for k in range(0, self.skills):
+                    if self.TREQ[i][k] == 1 and self.LEXP[j][k] > 0:
+                        self.valid_human[i][j] = 1
+                        break
+                for l in range(0, self.machines):
+                    if self.MREQ[i][l] == 1 and self.MEXP[j][l] > 0:
+                        self.valid_machine[i][l] = 1
+                        break

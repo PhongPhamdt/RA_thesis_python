@@ -2,13 +2,14 @@ from algorithm.individual import Individual
 from algorithm.objectives import Objectives
 from daos.parameter import Parameter
 from functools import cmp_to_key
+from utils import Common
 import numpy as np
 import random
 INFINITY = 10000
 
 
 class NSGA:
-    def run(self, params: Parameter, pop_init, pop_size=100, Pc=0.9, Pm=0.1, max_gen=1000):
+    def run(self, params: Parameter, pop_init, pop_size=100, Pc=0.9, Pm=0.1, max_gen=100):
         population_info = []
         for i in range(0, pop_size):
             population_info.append(
@@ -238,8 +239,24 @@ class NSGA:
             pos = random.randint(0, n-1)
             if pos >= len(t_h_assign):
                 print("pos {}    {}".format(pos, len(t_h_assign)))
-            t_h_assign[pos] = random.randint(1, (1 << n) - 1)
-            t_m_assign[pos] = random.randint(1, (1 << n) - 1)
+            t_h_assign[pos] = random.randint(1, (1 << params.humans) - 1)
+            t_m_assign[pos] = random.randint(1, (1 << params.machines) - 1)
+            t_h_bit_assign = params.valid_human[i]
+            t_h_bit_string = "0"*params.humans
+            t_m_bit_assign = params.valid_machine[i]
+            t_m_bit_string = "0"*params.machines
+            if Common.rand_pos(t_h_bit_assign) is not None:
+                t_h_bit_string_list = list(t_h_bit_string)
+                t_h_bit_string_list[Common.rand_pos(t_h_bit_assign)] = "1"
+                t_h_bit_string = "".join(t_h_bit_string_list)
+            if Common.rand_pos(t_m_bit_assign) is not None:
+                t_m_bit_string_list = list(t_m_bit_string)
+                t_m_bit_string_list[Common.rand_pos(t_m_bit_assign)] = "1"
+                t_m_bit_string = "".join(t_m_bit_string_list)
+
+            t_h_assign[i] = int(t_h_bit_string, 2)
+            t_m_assign[i] = int(t_m_bit_string, 2)
+
             child_ind = Individual()
             child_ind.set(t_h_assign, t_m_assign)
             new_pop_info.append(
