@@ -46,10 +46,10 @@ class NSGA:
                 result += self.crowding_distance_selection(
                     obj_constrs, F[i], pop_size - current_len)
             break
-        ans = []
+        new_p = []
         for index in result:
-            ans.append(population_info[index])
-        return ans
+            new_p.append(population_info[index])
+        return new_p
 
     def fast_nondominated_sort(self, obj_constr):
         # obj_constr[i] contain all objective and constraint value of i-th element

@@ -5,6 +5,11 @@ import numpy as np
 
 
 class Objectives:
+    def __init__(self):
+        self.w_duration = 0.2
+        self.w_assignment = 0.5
+        self.w_cost = 0.3
+
     def f_duration(self, individual: Individual, params: Parameter):
         prev_tasks = Common.get_prev_tasks(params)
         t_start = np.empty(shape=params.tasks, dtype=int)
@@ -139,3 +144,6 @@ class Objectives:
         objectives.append(-self.f_cost(individual, params))
         constraints = []
         return objectives, constraints
+
+    def fitness(self, individual: Individual, params: Parameter):
+        return self.w_duration*self.f_duration(individual, params) + self.w_assignment*self.f_assignment(individual, params) + self.w_cost*self.f_cost(individual, params)
